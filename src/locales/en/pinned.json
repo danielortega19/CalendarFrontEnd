@@ -1,0 +1,12 @@
+{
+  "header": "Pinned Notes",
+  "noPinned": "No pinned notes",
+  "edit": "Edit",
+  "unpin": "Unpin",
+  "delete": "Delete",
+  "noDate": "No date",
+  "unpinnedSuccess": "Note unpinned",
+  "unpinError": "Failed to unpin note",
+  "deleteSuccess": "Note deleted",
+  "deleteError": "Failed to delete note"
+}

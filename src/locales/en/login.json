@@ -1,0 +1,14 @@
+{
+  "welcome": "Welcome Back 👋",
+  "emailLabel": "Email",
+  "emailPlaceholder": "you@example.com",
+  "passwordLabel": "Password",
+  "passwordPlaceholder": "••••••••",
+  "login": "Login",
+  "loggingIn": "Logging in...",
+  "forgotPassword": "Forgot password?",
+  "noAccount": "Don’t have an account?",
+  "register": "Register",
+  "mustChangePassword": "You must change your temporary password before logging in.",
+  "loginFailed": "Login failed"
+}

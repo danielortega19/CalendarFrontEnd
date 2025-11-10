@@ -1,0 +1,12 @@
+{
+  "header": "Notas Fijadas",
+  "noPinned": "No hay notas fijadas",
+  "edit": "Editar",
+  "unpin": "Desfijar",
+  "delete": "Eliminar",
+  "noDate": "Sin fecha",
+  "unpinnedSuccess": "Nota desfijada",
+  "unpinError": "Error al desfijar la nota",
+  "deleteSuccess": "Nota eliminada",
+  "deleteError": "Error al eliminar la nota"
+}

@@ -1,0 +1,12 @@
+{
+  "searchPlaceholder": "Buscar notas...",
+  "allPriorities": "Todas las prioridades",
+  "normal": "Normal 🟡",
+  "important": "Importante 🔴",
+  "reminder": "Recordatorio 🔵",
+  "fromDate": "Desde",
+  "toDate": "Hasta",
+  "insight": "💡 {{imp}} importantes, {{rem}} recordatorios, {{nor}} normales.",
+  "apply": "Aplicar",
+  "clear": "Limpiar"
+}

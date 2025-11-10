@@ -1,0 +1,16 @@
+{
+  "welcome": "Bienvenido, {{name}} 👋",
+  "resetPassword": "Cambiar la Contraseña",
+  "darkMode": "Modo Oscuro",
+  "lightMode": "Modo Claro",
+  "logout": "Cerrar Sesión",
+  "loading": "Cargando panel...",
+   "prev": "Anterior",
+  "today": "Hoy",
+  "next": "Siguiente",
+  "noNotes": "No hay notas",
+    "guestBannerTitle": "Estás usando el modo invitado",
+  "guestBannerSubtitle": "Las notas de invitado se guardan temporalmente y se eliminan después de 30 días.",
+  "guestBannerButton": "Crear una cuenta",
+   "sessionEnd": "La sesión ha caducado, se ha cambiado al modo invitado."
+}

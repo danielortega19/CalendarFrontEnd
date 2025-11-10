@@ -1,13 +1,647 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Comic+Neue:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌈 Sticky Theme Variables */
+:root {
+  --sticky-bg: #fffef8;
+  --sticky-paper: #fffcea;
+  --sticky-highlight: #fff59d;
+  --sticky-shadow: rgba(0, 0, 0, 0.12);
+
+  --note-yellow: #fff8b1;
+  --note-orange: #ffd8a8;
+  --note-blue: #c8e6ff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* 🌤️ Global Page Setup */
+body {
+  font-family: 'Comic Neue', 'Patrick Hand', sans-serif;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--sticky-bg),
+    var(--sticky-bg) 25px,
+    #fffdea 26px,
+    var(--sticky-bg) 27px
+  );
+  color: #3b3b3b;
+  min-height: 100vh;
+  line-height: 1.6;
+  margin: 0;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ⚡ Transitions */
+* {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* 🗂️ Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* ✨ Sticky Header */
+header.sticky-header {
+  background: var(--sticky-highlight);
+  border-bottom: 2px solid #f4e36f;
+  box-shadow: 0 2px 4px var(--sticky-shadow);
+  color: #3b3b3b;
+  padding: 1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header.sticky-header h1 {
+  font-family: "Comic Neue", sans-serif;
+  font-weight: 700;
+}
+
+/* 🗒️ Sticky Card */
+.sticky-card {
+  background: var(--sticky-paper);
+  border: 1px solid #f1e0a2;
+  border-radius: 1rem;
+  box-shadow: 0 3px 6px var(--sticky-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sticky-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.18);
+}
+
+/* 🗂️ Notes */
+.note-normal { background-color: var(--note-yellow); color: #333; }
+.note-important { background-color: var(--note-orange); color: #333; }
+.note-reminder { background-color: var(--note-blue); color: #333; }
+
+/* 🧁 Buttons */
+.btn-sticky {
+  background: var(--sticky-highlight);
+  color: #333;
+  border: 1px solid #f2e278;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px var(--sticky-shadow);
+}
+.btn-sticky:hover {
+  background: #ffee58;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--sticky-shadow);
+}
+
+/* 🎞️ Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn { animation: fadeIn 0.25s ease forwards; }
+
+/* 📌 Pin */
+.pin {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #e53935; border: 2px solid #b71c1c;
+  position: absolute; top: 8px; left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  animation: wiggle 2.5s ease-in-out infinite;
+}
+@keyframes wiggle {
+  0%,100% { transform: rotate(0deg) translateX(-50%); }
+  25% { transform: rotate(2deg) translateX(-50%); }
+  75% { transform: rotate(-2deg) translateX(-50%); }
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+  header.sticky-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+  .sticky-card { min-height: 8rem; }
+  .btn-sticky { padding: 0.5rem 1rem; font-size: 0.9rem; }
+}
+
+/* 🌙 Dark Mode Base */
+body.dark {
+  --sticky-bg: #121212;
+  --sticky-paper: #1e1e1e;
+  --sticky-highlight: #c6a94d;
+  --sticky-shadow: rgba(255, 255, 180, 0.08);
+
+  --note-yellow: #4a4020;
+  --note-orange: #5b3c2a;
+  --note-blue: #2f3c4f;
+
+  --text-primary: #f6f2d6;
+  --text-secondary: #d9d3aa;
+  --text-muted: #bfb78a;
+
+  color: var(--text-primary);
+  background: radial-gradient(circle at center, #1a1a1a 20%, #0d0d0d 100%) !important;
+}
+
+/* Dark Header */
+body.dark header.sticky-header {
+  background: #222 !important;
+  border-bottom: 1px solid #444 !important;
+  color: #f0f0f0 !important;
+  box-shadow: 0 0 12px rgba(255, 255, 180, 0.08);
+}
+
+/* Dark Cards */
+body.dark .sticky-card {
+  background: var(--sticky-paper);
+  border: 1px solid #555;
+  box-shadow:
+    0 0 8px rgba(255, 255, 160, 0.2),
+    0 0 16px rgba(255, 255, 200, 0.08);
+}
+body.dark .sticky-card:hover {
+  box-shadow:
+    0 0 12px rgba(255, 255, 180, 0.35),
+    0 0 24px rgba(255, 255, 220, 0.15);
+}
+
+/* 🧭 Sidebar + Calendar */
+aside, .calendar-grid, .calendar-cell {
+  background-color: var(--sticky-paper) !important;
+  border-color: #f3e8b3 !important;
+  color: #3b3b3b;
+}
+body.dark aside,
+body.dark .calendar-grid,
+body.dark .calendar-cell {
+  background-color: #202020 !important;
+  border-color: #444 !important;
+  color: var(--text-primary) !important;
+  box-shadow: inset 0 0 25px rgba(255, 245, 180, 0.03);
+}
+
+/* 📆 Calendar Hover */
+.calendar-cell:hover {
+  background: rgba(255, 255, 240, 0.6) !important;
+  transform: translateY(-1px);
+}
+body.dark .calendar-cell:hover {
+  background-color: #242424 !important;
+  box-shadow: 0 0 8px rgba(255, 245, 180, 0.12);
+}
+
+/* 🧾 Paper Texture */
+.calendar-grid,
+aside,
+.sticky-card {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 23px,
+    rgba(0, 0, 0, 0.04) 24px
+  );
+  background-size: 100% 25px;
+  background-blend-mode: multiply;
+}
+body.dark .calendar-grid,
+body.dark aside,
+body.dark .sticky-card {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 23px,
+    rgba(255, 255, 180, 0.04) 24px
+  );
+  background-size: 100% 25px;
+  background-blend-mode: screen;
+}
+
+/* -----------------------------------------------------------
+   🌗 Language Switch Animations
+----------------------------------------------------------- */
+@keyframes flagBounce {
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.25) rotate(8deg); }
+  60% { transform: scale(0.9) rotate(-6deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes paperFlicker {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
+  50% { filter: drop-shadow(0 2px 3px rgba(255, 240, 150, 0.25)); }
+}
+.flag-bounce { animation: flagBounce 0.5s ease-in-out; }
+.paper-flicker { animation: paperFlicker 0.6s ease-in-out; }
+.language-switch-glow {
+  box-shadow: 0 0 6px rgba(216, 180, 92, 0.6);
+}
+
+/* -----------------------------------------------------------
+   🌙 Improved Dark Mode Text Contrast + Vibrant Notes
+----------------------------------------------------------- */
+body.dark {
+  --text-primary: #f8f6e9;
+  --text-secondary: #e8e0b8;
+  --text-muted: #c8bf95;
+}
+
+/* General text contrast */
+body.dark,
+body.dark aside,
+body.dark .calendar-grid,
+body.dark .calendar-cell,
+body.dark .sticky-card {
+  color: var(--text-primary) !important;
+}
+
+/* Sidebar headings */
+body.dark aside h3,
+body.dark aside h4,
+body.dark aside strong {
+  color: var(--text-secondary) !important;
+}
+
+/* Muted placeholders */
+body.dark .calendar-cell p,
+body.dark .no-notes,
+body.dark .text-gray-400,
+body.dark .italic {
+  color: var(--text-muted) !important;
+  opacity: 0.95;
+}
+
+/* Buttons contrast */
+body.dark button,
+body.dark .btn-sticky {
+  color: #fff8d0 !important;
+}
+
+/* Vibrant sticky notes */
+body.dark .note-normal {
+  background-color: #5a5327 !important;
+  color: #fff8c7 !important;
+  border: 1px solid rgba(255, 230, 150, 0.25);
+}
+body.dark .note-important {
+  background-color: #703636 !important;
+  color: #ffe2e2 !important;
+  border: 1px solid rgba(255, 130, 130, 0.25);
+}
+body.dark .note-reminder {
+  background-color: #2d4760 !important;
+  color: #d6ecff !important;
+  border: 1px solid rgba(120, 180, 255, 0.25);
+}
+body.dark .note-normal:hover,
+body.dark .note-important:hover,
+body.dark .note-reminder:hover {
+  box-shadow: 0 0 10px rgba(255, 245, 180, 0.15);
+  transform: translateY(-2px);
+}
+/* -----------------------------------------------------------
+   🌞 Light Mode Enhancements — Balanced with Dark Mode
+----------------------------------------------------------- */
+body {
+  --text-primary-light: #3a3a3a;
+  --text-secondary-light: #5c5730;
+  --text-muted-light: #7a774d;
+}
+
+/* General readability */
+body:not(.dark),
+body:not(.dark) aside,
+body:not(.dark) .calendar-grid,
+body:not(.dark) .calendar-cell,
+body:not(.dark) .sticky-card {
+  color: var(--text-primary-light);
+}
+
+/* Sidebar titles + headers */
+body:not(.dark) aside h3,
+body:not(.dark) aside h4,
+body:not(.dark) aside strong {
+  color: var(--text-secondary-light);
+  font-weight: 600;
+}
+
+/* Muted placeholders */
+body:not(.dark) .calendar-cell p,
+body:not(.dark) .no-notes,
+body:not(.dark) .text-gray-400,
+body:not(.dark) .italic {
+  color: var(--text-muted-light);
+  opacity: 0.85;
+}
+
+/* Softer highlights + backgrounds */
+body:not(.dark) header.sticky-header {
+  background: #fffad1;
+  border-bottom: 2px solid #f3e57a;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+body:not(.dark) aside {
+  background-color: #fffdf2 !important;
+  border-color: #f5e6b8 !important;
+  box-shadow: inset 0 0 15px rgba(255, 245, 180, 0.15);
+}
+body:not(.dark) .calendar-grid {
+  background-color: #fffef9 !important;
+  border-color: #f0e1a5 !important;
+}
+
+/* 🗒️ Stickies - slightly richer but soft */
+body:not(.dark) .note-normal {
+  background-color: #fff8c7 !important;
+  border: 1px solid #f0e29a;
+  color: #423e20 !important;
+}
+body:not(.dark) .note-important {
+  background-color: #ffe3c4 !important;
+  border: 1px solid #f3b687;
+  color: #553014 !important;
+}
+body:not(.dark) .note-reminder {
+  background-color: #d6ecff !important;
+  border: 1px solid #b3dcff;
+  color: #1b395b !important;
+}
+
+/* Hover glow for sticky notes */
+body:not(.dark) .note-normal:hover,
+body:not(.dark) .note-important:hover,
+body:not(.dark) .note-reminder:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Buttons - warm gold tone */
+body:not(.dark) button,
+body:not(.dark) .btn-sticky {
+  background-color: #fff4a3 !important;
+  border-color: #f1d973 !important;
+  color: #333 !important;
+}
+body:not(.dark) .btn-sticky:hover {
+  background-color: #ffed6e !important;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+/* Light paper texture for consistency */
+body:not(.dark) .calendar-grid,
+body:not(.dark) aside,
+body:not(.dark) .sticky-card {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 23px,
+    rgba(0, 0, 0, 0.03) 24px
+  );
+  background-size: 100% 25px;
+  background-blend-mode: multiply;
+}
+/* -----------------------------------------------------------
+   📅 Calendar Font Visibility — Both Themes
+----------------------------------------------------------- */
+
+/* Light Mode - keep a warm paper tone */
+body:not(.dark) .calendar-cell {
+  color: #3d3b1f !important; /* darker ink color */
+  font-weight: 500;
+}
+body:not(.dark) .calendar-cell small,
+body:not(.dark) .calendar-cell span,
+body:not(.dark) .calendar-cell p {
+  color: #4f4b29 !important;
+}
+
+/* Dark Mode - brighter gold contrast */
+body.dark .calendar-cell {
+  color: #f9f5d7 !important; /* soft parchment white */
+  font-weight: 500;
+}
+body.dark .calendar-cell small,
+body.dark .calendar-cell span,
+body.dark .calendar-cell p {
+  color: #e9e0b0 !important; /* subtle warm gold */
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+}
+
+/* Calendar day headings (Sun, Mon, Tue...) */
+body.dark .calendar-grid th,
+body.dark .calendar-grid thead td,
+body.dark .calendar-grid .day-label {
+  color: #ffe98b !important;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(255, 240, 180, 0.15);
+}
+body:not(.dark) .calendar-grid th,
+body:not(.dark) .calendar-grid thead td,
+body:not(.dark) .calendar-grid .day-label {
+  color: #5f5625 !important;
+  font-weight: 600;
+}
+
+/* Month Title (e.g., “November 2025”) */
+body.dark .calendar-grid h2,
+body.dark .calendar-grid .month-label {
+  color: #fff6c2 !important;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 240, 180, 0.15);
+}
+body:not(.dark) .calendar-grid h2,
+body:not(.dark) .calendar-grid .month-label {
+  color: #4f461a !important;
+  font-weight: 600;
+}
+@keyframes flagBounce {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.25) rotate(10deg); }
+  50% { transform: scale(0.9) rotate(-6deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.flag-bounce {
+  animation: flagBounce 0.5s ease-in-out;
+}
+
+@keyframes paperFlicker {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
+  50% { filter: drop-shadow(0 2px 3px rgba(255, 240, 150, 0.35)); }
+}
+.paper-flicker {
+  animation: paperFlicker 0.6s ease-in-out;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(255,240,180,0.06); }
+  50% { box-shadow: 0 0 16px rgba(255,240,180,0.12); }
+}
+body.dark .note-hover-active {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes pulseSoft {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 240, 180, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255, 240, 180, 0.15);
+  }
+}
+.animate-pulse-soft {
+  animation: pulseSoft 1.5s ease-in-out infinite;
+}
+@keyframes pinPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 1px rgba(255, 120, 120, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(255, 150, 150, 0.7));
+  }
+}
+.animate-pinPulse {
+  animation: pinPulse 2.4s ease-in-out infinite;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(4px); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.2s ease forwards;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-fadeInUp {
+  animation: fadeInUp 0.2s ease-out forwards;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* Add to your global CSS */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+div[data-hover-card] {
+  animation: fadeInScale 0.15s ease-out;
+}
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeOutScale {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(6px);
+  }
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 0.18s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeInScale 0.18s ease-out both;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease;
+}
+
+/* 🌈 Toast Styling */
+.toast-error {
+  background: #fff0f0 !important;
+  color: #b91c1c !important;
+  border-left: 6px solid #ef4444 !important;
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.25);
+  font-weight: 600;
+}
+
+.toast-success {
+  background: #f0fff4 !important;
+  color: #166534 !important;
+  border-left: 6px solid #22c55e !important;
+  box-shadow: 0 3px 8px rgba(34, 197, 94, 0.25);
+  font-weight: 600;
+}
+
+.toast-warning {
+  background: #fffbea !important;
+  color: #92400e !important;
+  border-left: 6px solid #facc15 !important;
+  box-shadow: 0 3px 8px rgba(250, 204, 21, 0.25);
+  font-weight: 600;
+}
+
+/* ⚡ Shake animation for duplicate or critical errors */
+@keyframes toast-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.shake {
+  animation: toast-shake 0.4s ease;
+}
+@keyframes glow-red {
+  0%, 100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.2); }
+  50% { box-shadow: 0 0 12px rgba(255, 0, 0, 0.4); }
+}
+
+.shadow-glow {
+  animation: glow-red 1.5s ease-in-out infinite;
 }

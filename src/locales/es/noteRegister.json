@@ -1,0 +1,15 @@
+{
+  "loadError": "No se pudieron cargar las notas.",
+  "noteUpdated": "¡Nota actualizada!",
+  "noteAdded": "¡Nota añadida!",
+  "saveError": "Error al guardar la nota.",
+  "noteDeleted": "Nota eliminada.",
+  "deleteError": "Error al eliminar la nota.",
+  "noteMoved": "Nota movida.",
+  "moveError": "Error al mover la nota.",
+  "pinError": "No se pudo actualizar el pin.",
+  "guestPromptTitle": "¡Has creado algunas notas como invitado!",
+  "guestPromptBody": "¿Quieres registrarte para guardarlas permanentemente?",
+  "maybeLater": "Más tarde",
+  "registerNow": "Regístrate ahora"
+}

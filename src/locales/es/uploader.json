@@ -1,0 +1,10 @@
+{
+  "label": "Captura de pantalla / Imagen",
+  "clickOrPaste": "Haz clic o pega una imagen aquí",
+  "maxSize": "(máx. 5MB)",
+  "uploading": "Subiendo imagen...",
+  "success": "¡Imagen subida con éxito!",
+  "failed": "Error al subir. Inténtalo de nuevo.",
+  "removed": "Imagen eliminada",
+  "zoom": "Haz clic para ampliar"
+}

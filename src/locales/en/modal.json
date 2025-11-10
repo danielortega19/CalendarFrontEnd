@@ -1,0 +1,16 @@
+{
+  "addNote": "Add Note",
+  "editNote": "Edit Note",
+  "title": "Title",
+  "description": "Description (optional)",
+  "priority": "Priority",
+  "normal": "Normal 🟡",
+  "important": "Important 🔴",
+  "reminder": "Reminder 🔵",
+  "pinNote": "📌 Pin note",
+  "update": "Update",
+  "add": "Add",
+  "cancel": "Cancel",
+  "deleteNote": "Delete Note",
+  "titleRequired": "Title is Required"
+}

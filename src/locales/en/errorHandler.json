@@ -1,0 +1,11 @@
+{
+  "CRITICAL_ERROR": "Critical Error",
+  "DB_FAIL": "The database connection failed. Please try again later.",
+  "NETWORK_ERROR": "Network problem — check your Wi-Fi or VPN.",
+  "DUPLICATE_NOTE": "Duplicate note detected for this day.",
+  "UNAUTHORIZED": "Session expired. Please log in again.",
+  "INVALID_ARGUMENT": "Invalid input or missing fields.",
+  "TIMEOUT": "Request timed out. Please try again.",
+  "UNKNOWN": "An unexpected error occurred.",
+  "CLOSE": "Close"
+}

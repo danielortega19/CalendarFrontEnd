@@ -1,0 +1,15 @@
+{
+  "loadError": "Unable to load notes.",
+  "noteUpdated": "Note updated!",
+  "noteAdded": "Note added!",
+  "saveError": "Error saving note.",
+  "noteDeleted": "Note deleted.",
+  "deleteError": "Error deleting note.",
+  "noteMoved": "Note moved.",
+  "moveError": "Error moving note.",
+  "pinError": "Failed to update pin.",
+  "guestPromptTitle": "You’ve created a few notes as a guest!",
+  "guestPromptBody": "Would you like to register to save them permanently?",
+  "maybeLater": "Maybe later",
+  "registerNow": "Register now"
+}

@@ -1,0 +1,10 @@
+{
+  "label": "Screenshot / Image",
+  "clickOrPaste": "Click or paste an image here",
+  "maxSize": "(max 5MB)",
+  "uploading": "Uploading image...",
+  "success": "Image uploaded successfully!",
+  "failed": "Upload failed. Try again.",
+  "removed": "Image removed",
+  "zoom": "Click to zoom"
+}

@@ -1,0 +1,16 @@
+{
+  "welcome": "Welcome, {{name}} 👋",
+  "resetPassword": "Change Password",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "logout": "Logout",
+  "loading": "Loading dashboard...",
+  "prev": "Prev",
+  "today": "Today",
+  "next": "Next",
+  "noNotes": "No notes",
+  "guestBannerTitle": "You’re browsing as a Guest",
+  "guestBannerSubtitle": "Guest notes are stored temporarily and auto-delete after 30 days.",
+  "guestBannerButton": "Create an Account",
+   "sessionEnd": "Session expired, switched to guest mode."
+}

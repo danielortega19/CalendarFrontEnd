@@ -1,0 +1,32 @@
+{
+  "title": "Contáctanos",
+  "subtitle": "Nos encantaría saber de ti. Envíanos un mensaje a continuación.",
+  
+  "name": "Nombre",
+  "namePlaceholder": "Escribe tu nombre",
+  "email": "Correo electrónico",
+  "emailPlaceholder": "Escribe tu correo electrónico",
+  "subject": "Asunto",
+  "subjectPlaceholder": "¿De qué trata tu mensaje?",
+  "message": "Mensaje",
+  "messagePlaceholder": "Escribe tu mensaje aquí...",
+  
+  "sendMessage": "Enviar mensaje",
+  "sending": "Enviando...",
+  "backHome": "Volver al inicio",
+  
+  "successMessage": "✅ ¡Tu mensaje se envió con éxito!",
+  "errorMessage": "Algo salió mal. Por favor, inténtalo de nuevo.",
+  "validationError": "Por favor corrige los errores marcados antes de continuar.",
+  
+  "errorNameRequired": "El nombre es obligatorio.",
+  "errorEmailRequired": "El correo electrónico es obligatorio.",
+  "errorEmailInvalid": "Por favor introduce un correo electrónico válido.",
+  "errorSubjectRequired": "El asunto es obligatorio.",
+  "errorMessageRequired": "El mensaje es obligatorio.",
+  
+  "errorProfanityDetected": "Por favor elimina las palabras inapropiadas.",
+  "errorProfanitySubject": "El asunto contiene lenguaje inapropiado.",
+  "errorProfanityLive": "Se detectó lenguaje inapropiado — elimínalo antes de continuar."
+
+}

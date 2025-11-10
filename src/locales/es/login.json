@@ -1,0 +1,14 @@
+{
+  "welcome": "¡Bienvenido de nuevo 👋!",
+  "emailLabel": "Correo electrónico",
+  "emailPlaceholder": "tucorreo@ejemplo.com",
+  "passwordLabel": "Contraseña",
+  "passwordPlaceholder": "••••••••",
+  "login": "Iniciar sesión",
+  "loggingIn": "Iniciando sesión...",
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "noAccount": "¿No tienes una cuenta?",
+  "register": "Regístrate",
+  "mustChangePassword": "Debes cambiar tu contraseña temporal antes de iniciar sesión.",
+  "loginFailed": "Error al iniciar sesión"
+}

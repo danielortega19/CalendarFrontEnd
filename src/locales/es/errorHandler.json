@@ -1,0 +1,11 @@
+{
+  "CRITICAL_ERROR": "Error Crítico",
+  "DB_FAIL": "La conexión con la base de datos falló. Inténtalo de nuevo más tarde.",
+  "NETWORK_ERROR": "Problema de red — verifica tu conexión o VPN.",
+  "DUPLICATE_NOTE": "Nota duplicada detectada para este día.",
+  "UNAUTHORIZED": "Sesión expirada. Por favor inicia sesión de nuevo.",
+  "INVALID_ARGUMENT": "Entrada inválida o campos faltantes.",
+  "TIMEOUT": "La solicitud expiró. Inténtalo nuevamente.",
+  "UNKNOWN": "Ocurrió un error inesperado.",
+  "CLOSE": "Cerrar"
+}

@@ -1,0 +1,27 @@
+{
+  "title": "Contact Us",
+  "subtitle": "We’d love to hear from you — send us a message below.",
+  "name": "Name",
+  "namePlaceholder": "Enter your name",
+  "email": "Email",
+  "emailPlaceholder": "Enter your email address",
+  "subject": "Subject",
+  "subjectPlaceholder": "What's your message about?",
+  "message": "Message",
+  "messagePlaceholder": "Type your message here...",
+  "sendMessage": "Send Message",
+  "sending": "Sending...",
+  "backHome": "Back to Home",
+  "successMessage": "✅ Message sent successfully!",
+  "errorMessage": "Something went wrong. Please try again.",
+  "validationError": "Please fix the highlighted errors.",
+  "errorNameRequired": "Name is required.",
+  "errorEmailRequired": "Email is required.",
+  "errorEmailInvalid": "Please enter a valid email address.",
+  "errorSubjectRequired": "Subject is required.",
+  "errorMessageRequired": "Message is required.",
+  "errorProfanityDetected": "Please remove inappropriate language.",
+  "errorProfanitySubject": "Subject contains inappropriate language.",
+  "errorProfanityLive": "Inappropriate language detected — please remove it before continuing."
+
+}
