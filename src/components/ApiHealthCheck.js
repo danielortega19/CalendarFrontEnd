@@ -9,7 +9,7 @@ export default function ApiHealthCheck() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const response = await fetch(`${API_BASE}/health`);
+        const response = await fetch(`${API_BASE}health`);
         if (response.ok) {
           setStatus("✅ Connected to API");
           setColor("green");
