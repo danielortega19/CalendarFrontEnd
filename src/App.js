@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import useGlobalFetchInterceptor from "./utils/globalFetchInterceptor";
 import ChangePassword from "./pages/ChangePassword";
+import ApiHealthCheck from "./components/ApiHealthCheck";
 
 // Lazy load pages
 const Register = lazy(() => import("./pages/Register"));
@@ -24,6 +25,9 @@ export default function App() {
         transition-colors duration-500
       "
     >
+      
+      {/* ✅ API Health Check */}
+      <ApiHealthCheck />
       <Suspense
         fallback={
           <div className="min-h-screen flex items-center justify-center text-yellow-600 dark:text-yellow-300 text-lg font-semibold">
