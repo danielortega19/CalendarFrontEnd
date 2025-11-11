@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ImageUploader from "./ImageUploader";
-import { toIsoLocalYmd } from "../utils/date";
+import {
+  toIsoLocalYmd,
+  normalizeNoteDate,
+  parseLocalDate,
+} from "../utils/date";
 import { isBefore, isToday, format } from "date-fns";
 
 export default function NoteModal({
@@ -24,16 +28,22 @@ export default function NoteModal({
 
   // 🔔 Reminder state
   const [reminderEnabled, setReminderEnabled] = useState(note?.reminder || false);
-  const [reminderDate, setReminderDate] = useState(
-    note?.reminderDate ? new Date(note.reminderDate).toISOString().slice(0, 16) : ""
-  );
+  const [reminderDate, setReminderDate] = useState(() => {
+    if (!note?.reminderDate) return "";
+    const local = parseLocalDate(note.reminderDate);
+    return local.toISOString().slice(0, 16);
+  });
   const [reminderEmail, setReminderEmail] = useState(note?.reminderEmail || "");
   const [reminderError, setReminderError] = useState("");
   const [previewTime, setPreviewTime] = useState("");
 
   const { t } = useTranslation("modal");
   const now = new Date();
-  const noteDate = note?.date ? new Date(note.date) : day ? new Date(day) : new Date();
+  const noteDate = note?.date
+    ? parseLocalDate(note.date)
+    : day
+    ? parseLocalDate(day)
+    : new Date();
   const isPastDate = isBefore(noteDate, now.setHours(0, 0, 0, 0));
   const isTodayDate = isToday(noteDate);
 
@@ -97,7 +107,7 @@ export default function NoteModal({
       reminderEmail: user?.email || reminderEmail.trim() || null,
       imageBase64,
       imageType,
-      date: toIsoLocalYmd(noteDate),
+      date: normalizeNoteDate(noteDate),
     };
 
     onSave(newNote);
