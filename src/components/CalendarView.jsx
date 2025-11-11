@@ -45,7 +45,14 @@ export default function CalendarView({
     cap(format(d, "EEE", { locale: currentLocale }))
   );
 
-  const pastel = ["#fff8d5", "#fde2e2", "#e0f7fa", "#f9f1d9", "#f0e6ff", "#dfffe0"];
+ const pastel = [
+  { light: "#fff8d5", dark: "#5b4a00" },
+  { light: "#fde2e2", dark: "#613434" },
+  { light: "#e0f7fa", dark: "#16464b" },
+  { light: "#f9f1d9", dark: "#564a24" },
+  { light: "#f0e6ff", dark: "#3f2f61" },
+  { light: "#dfffe0", dark: "#1f4a28" },
+];
 
   const onDragStart = () => document.body.classList.add("is-dragging");
   const onDragEnd = async (result) => {
@@ -189,7 +196,11 @@ export default function CalendarView({
                     {...dropProvided.droppableProps}
                     ref={dropProvided.innerRef}
                     className={`relative rounded-2xl p-3 border border-[#f3e8b3] bg-[var(--sticky-paper)] dark:bg-[#181818] dark:border-[#d1b866] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all duration-200 ease-in-out ${
-                      isCurrentMonth ? "opacity-100" : "opacity-50 grayscale-[0.3]"
+                      (() => {
+  const isPastDay = day < new Date().setHours(0, 0, 0, 0);
+  if (!isCurrentMonth || isPastDay) return "opacity-60 grayscale-[0.2]";
+  return "opacity-100";
+})()
                     } h-[150px] sm:h-[170px] md:h-[190px] lg:h-[210px] overflow-hidden`}
                   >
                     <div className="flex justify-between items-center mb-1">
@@ -207,32 +218,46 @@ export default function CalendarView({
 
                     <div className="space-y-1 max-h-[calc(100%-2rem)] overflow-y-auto pr-1">
                       {dailyNotes.length ? (
-                        dailyNotes.map((n, index) => {
-                          const color = pastel[index % pastel.length];
-                          return (
-                            <Draggable key={n.id} draggableId={n.id.toString()} index={index}>
-                              {(dragProvided) => (
-                                <div
-                                  ref={dragProvided.innerRef}
-                                  {...dragProvided.draggableProps}
-                                  {...dragProvided.dragHandleProps}
-                                  style={{ backgroundColor: color, ...dragProvided.draggableProps.style }}
-                                  onMouseEnter={(e) => showHover(n, e.currentTarget)}
-                                  onMouseLeave={requestHideHover}
-                                  onDoubleClick={() => openEditModal(dateKey, n)}
-                                  className="px-2 py-1 text-xs rounded-md border truncate cursor-pointer select-none hover:-translate-y-[2px] transition-transform duration-150 text-gray-700 dark:text-[#f3e9c9]"
-                                >
-                                  {n.title}
-                                </div>
-                              )}
-                            </Draggable>
-                          );
-                        })
-                      ) : (
-                        <p className="text-[11px] italic text-gray-500 dark:text-[#bcae80]">
-                          {t("noNotes")}
-                        </p>
-                      )}
+  dailyNotes.map((n, index) => {
+    const palette = pastel[index % pastel.length];
+    return (
+      <Draggable key={n.id} draggableId={n.id.toString()} index={index}>
+        {(dragProvided) => (
+          <div
+            ref={dragProvided.innerRef}
+            {...dragProvided.draggableProps}
+            {...dragProvided.dragHandleProps}
+            style={{
+              backgroundColor:
+                document.documentElement.classList.contains("dark")
+                  ? palette.dark
+                  : palette.light,
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: document.documentElement.classList.contains("dark")
+                ? "#f3f3f3"
+                : "#333",
+              boxShadow: document.documentElement.classList.contains("dark")
+                ? "0 1px 3px rgba(0,0,0,0.4)"
+                : "0 1px 3px rgba(0,0,0,0.1)",
+              ...dragProvided.draggableProps.style,
+            }}
+            onMouseEnter={(e) => showHover(n, e.currentTarget)}
+            onMouseLeave={requestHideHover}
+            onDoubleClick={() => openEditModal(dateKey, n)}
+            className="px-2 py-1 text-xs rounded-md truncate cursor-pointer select-none hover:-translate-y-[2px] transition-transform duration-150"
+          >
+            {n.title}
+          </div>
+        )}
+      </Draggable>
+    );
+  })
+) : (
+  <p className="text-[11px] italic text-gray-500 dark:text-[#bcae80]">
+    {t("noNotes")}
+  </p>
+)}
+
                       {dropProvided.placeholder}
                     </div>
                   </div>

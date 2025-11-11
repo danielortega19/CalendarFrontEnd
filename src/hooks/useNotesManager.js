@@ -14,7 +14,7 @@ import {
   updateGuestNote,
   isAuthenticated,
 } from "../api";
-import { toIsoLocalYmd } from "../utils/date";
+import { toIsoLocalYmd, normalizeNoteDate } from "../utils/date";
 import { useTranslation } from "react-i18next";
 
 export default function useNotesManager(userId, refreshKey, onNoteAdded) {
@@ -31,7 +31,14 @@ export default function useNotesManager(userId, refreshKey, onNoteAdded) {
   const fetchNotes = useCallback(async () => {
     try {
       const data = auth ? await getNotes(userId) : await getGuestNotes();
-      setNotes(data || []);
+
+      // ✅ Normalize incoming UTC or plain date to local YYYY-MM-DD
+      setNotes(
+        (data || []).map((n) => ({
+          ...n,
+          date: normalizeNoteDate(n.date),
+        }))
+      );
     } catch (err) {
       console.error("Error fetching notes:", err);
       toast.error(t("loadError"));
@@ -43,11 +50,10 @@ export default function useNotesManager(userId, refreshKey, onNoteAdded) {
   }, [fetchNotes, refreshKey]);
 
   useEffect(() => {
-  const handleAuthChange = () => fetchNotes();
-  window.addEventListener("authChange", handleAuthChange);
-  return () => window.removeEventListener("authChange", handleAuthChange);
-}, [fetchNotes]);
-
+    const handleAuthChange = () => fetchNotes();
+    window.addEventListener("authChange", handleAuthChange);
+    return () => window.removeEventListener("authChange", handleAuthChange);
+  }, [fetchNotes]);
 
   // 🪄 Modal Controls
   const openAddModal = (day, global = false) => {
@@ -71,13 +77,16 @@ export default function useNotesManager(userId, refreshKey, onNoteAdded) {
   // 💾 Save or Update Note
   const saveNote = async (noteData) => {
     try {
+      // 🧭 Build timezone-safe payload
+      const localDay = toIsoLocalYmd(noteData.date || modalDay || new Date());
       const payload = {
         userId,
         title: noteData.title,
         description: noteData.description || "",
         priority: (noteData.priority || "normal").toLowerCase(),
         pinned: !!noteData.pinned,
-        date: toIsoLocalYmd(noteData.date || modalDay || new Date()),
+        // ✅ Store at local-noon UTC time to avoid shifting backward in UTC- zones
+        date: `${localDay}T12:00:00Z`,
         imageBase64: noteData.imageBase64,
         imageType: noteData.imageType,
       };
@@ -98,23 +107,21 @@ export default function useNotesManager(userId, refreshKey, onNoteAdded) {
         } else {
           await addGuestNote(payload);
 
-          // ✅ Mark this user as having guest notes (for migration prompt)
+          // ✅ Mark guest session
           localStorage.setItem("hasGuestNotes", "true");
 
-          // 🧮 Track guest note count
+          // 🧮 Track guest note count and show registration confetti
           setGuestNoteCount((prev) => {
             const newCount = prev + 1;
             if (newCount === 3 && !sessionStorage.getItem("guestPromptShown")) {
               sessionStorage.setItem("guestPromptShown", "true");
 
-              // 🎉 Fun visual feedback
               confetti({
                 particleCount: 70,
                 spread: 70,
                 origin: { y: 0.8 },
               });
 
-              // 🎨 Toast with register suggestion
               toast.custom(
                 (tToast) => (
                   <div
@@ -183,7 +190,8 @@ export default function useNotesManager(userId, refreshKey, onNoteAdded) {
   // 📅 Move Note (change date)
   const moveNote = async (id, newDate) => {
     try {
-      const updated = await updateNoteDate(id, newDate);
+      // newDate should already be local day
+      const updated = await updateNoteDate(id, `${newDate}T12:00:00Z`);
       toast.success(t("noteMoved"));
       return { id, date: newDate, ...updated };
     } catch (err) {

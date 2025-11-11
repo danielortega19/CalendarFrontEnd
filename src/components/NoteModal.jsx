@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ImageUploader from "./ImageUploader";
 import { toIsoLocalYmd } from "../utils/date";
+import { isBefore, isToday, format } from "date-fns";
 
 export default function NoteModal({
   day,
@@ -10,6 +11,7 @@ export default function NoteModal({
   onClose,
   onSave,
   onDelete,
+  user, // 👈 user prop (contains email if logged in)
 }) {
   const [title, setTitle] = useState(note?.title || "");
   const [description, setDescription] = useState(note?.description || "");
@@ -17,25 +19,82 @@ export default function NoteModal({
   const [pinned, setPinned] = useState(note?.pinned || false);
   const [imageBase64, setImageBase64] = useState(note?.imageBase64 || null);
   const [imageType, setImageType] = useState(note?.imageType || null);
-  const [error, setError] = useState(""); // ⚠️ Error message for title
+  const [error, setError] = useState("");
   const [closing, setClosing] = useState(false);
 
+  // 🔔 Reminder state
+  const [reminderEnabled, setReminderEnabled] = useState(note?.reminder || false);
+  const [reminderDate, setReminderDate] = useState(
+    note?.reminderDate ? new Date(note.reminderDate).toISOString().slice(0, 16) : ""
+  );
+  const [reminderEmail, setReminderEmail] = useState(note?.reminderEmail || "");
+  const [reminderError, setReminderError] = useState("");
+  const [previewTime, setPreviewTime] = useState("");
+
   const { t } = useTranslation("modal");
+  const now = new Date();
+  const noteDate = note?.date ? new Date(note.date) : day ? new Date(day) : new Date();
+  const isPastDate = isBefore(noteDate, now.setHours(0, 0, 0, 0));
+  const isTodayDate = isToday(noteDate);
+
+  // 🎬 fade animation
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to {opacity: 1; transform: translateY(0);} }
+      .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+    `;
+    document.head.appendChild(style);
+    return () => style.remove();
+  }, []);
+
+  // 🕓 default reminder (note’s day at 9 AM)
+  useEffect(() => {
+    if (!note?.reminderDate && !isPastDate) {
+      const defaultDate = new Date(noteDate);
+      defaultDate.setHours(9, 0, 0, 0);
+      setReminderDate(defaultDate.toISOString().slice(0, 16));
+    }
+  }, [noteDate]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 🗓️ Live preview of reminder
+  useEffect(() => {
+    if (reminderDate) {
+      const formatted = format(new Date(reminderDate), "PPP, p");
+      setPreviewTime(`${t("reminderSetFor")} ${formatted}`);
+    } else setPreviewTime("");
+  }, [reminderDate, t]);
 
   const handleSubmit = () => {
     if (!title.trim()) {
-      setError(t("titleRequired") || "Title is required");
+      setError(t("titleRequired"));
       return;
     }
-    setError(""); // clear any old error
+    setError("");
 
-    const noteDate = note?.date || day || new Date();
+    let reminderDateValue = null;
+
+    if (reminderEnabled && reminderDate) {
+      reminderDateValue = new Date(reminderDate);
+      if (isBefore(reminderDateValue, new Date())) {
+        setReminderError(t("reminderInvalidFuture"));
+        return;
+      }
+    }
+
+    const reminderDateIso = reminderDateValue
+      ? new Date(reminderDateValue).toISOString()
+      : null;
+
     const newNote = {
       ...note,
       title,
       description,
       priority,
       pinned,
+      reminder: reminderEnabled,
+      reminderDate: reminderDateIso,
+      reminderEmail: user?.email || reminderEmail.trim() || null,
       imageBase64,
       imageType,
       date: toIsoLocalYmd(noteDate),
@@ -69,15 +128,13 @@ export default function NoteModal({
       }`}
     >
       <div
-        className={`
-          relative w-full max-w-sm rounded-2xl border border-[#f0e8d8] 
+        className={`relative w-full max-w-sm rounded-2xl border border-[#f0e8d8] 
           bg-[#fdfcf9] p-6 shadow-[0_4px_15px_rgba(0,0,0,0.1)]
           dark:bg-[#2b2b2b] dark:border-[#444]
           transform transition-all duration-300 ease-in-out 
-          ${closing ? "scale-95 opacity-0" : "scale-100 opacity-100"}
-        `}
+          ${closing ? "scale-95 opacity-0" : "scale-100 opacity-100"}`}
       >
-        {/* ❌ Close Button */}
+        {/* ❌ Close */}
         <button
           onClick={handleClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-lg font-bold transition-all"
@@ -85,7 +142,7 @@ export default function NoteModal({
           ✕
         </button>
 
-        {/* 📝 Title */}
+        {/* Header */}
         <h3 className="text-lg font-semibold text-center mb-4 text-gray-800 dark:text-gray-100">
           {note ? t("editNote") : t("addNote")}
           {formattedDay && (
@@ -95,7 +152,6 @@ export default function NoteModal({
           )}
         </h3>
 
-        {/* ✏️ Form */}
         <div className="space-y-3">
           {/* Title */}
           <div>
@@ -134,20 +190,27 @@ export default function NoteModal({
           ></textarea>
 
           {/* Priority */}
-          <div className="flex items-center justify-between">
-            <label className="text-sm text-gray-700 dark:text-gray-300">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t("priority")}
             </label>
             <select
-              className="border border-[#f0e8d8] rounded-lg px-2 py-1 text-sm 
-                         bg-[#fffdf4] text-gray-800 focus:ring-2 focus:ring-[#d8b45c] outline-none
-                         dark:bg-[#3a3a3a] dark:border-[#666] dark:text-gray-100"
               value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setPriority(value);
+                if (value === "reminder") setReminderEnabled(true);
+              }}
+              className="w-full rounded-lg border border-[#f0e8d8] bg-[#fffdf4]
+                         px-3 py-2 text-sm text-gray-800 focus:ring-2 focus:ring-[#d8b45c]
+                         outline-none transition-all dark:bg-[#3a3a3a] dark:border-[#666]
+                         dark:text-gray-100"
             >
               <option value="normal">{t("normal")}</option>
               <option value="important">{t("important")}</option>
-              <option value="reminder">{t("reminder")}</option>
+              {!isPastDate && (
+                <option value="reminder">{t("reminder")}</option>
+              )}
             </select>
           </div>
 
@@ -162,7 +225,7 @@ export default function NoteModal({
             }}
           />
 
-          {/* Pin */}
+          {/* 📌 Pin */}
           <label className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
             <input
               type="checkbox"
@@ -172,6 +235,96 @@ export default function NoteModal({
             />
             <span>{t("pinNote")}</span>
           </label>
+
+          {/* 🔔 Reminder Section */}
+          {priority === "reminder" && !isPastDate && (
+            <div className="border-t border-[#f0e8d8] dark:border-[#444] pt-3 mt-3 space-y-3 animate-fadeIn">
+              {!reminderEnabled ? (
+                <button
+                  onClick={() => setReminderEnabled(true)}
+                  className="w-full text-sm font-medium bg-[#fffdf4] text-[#333] border border-[#d8b45c]
+                             rounded-lg py-2 hover:bg-[#f7f1de] transition-all dark:bg-[#3a3a3a] dark:text-gray-100"
+                >
+                  ⏰ {t("setReminder")}
+                </button>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {t("reminderQuestion")}
+                    </p>
+                    <button
+                      onClick={() => {
+                        setReminderEnabled(false);
+                        setReminderDate("");
+                        setReminderError("");
+                        setPreviewTime("");
+                      }}
+                      className="text-xs text-red-500 hover:underline"
+                    >
+                      {t("removeReminder")}
+                    </button>
+                  </div>
+
+                  {/* Date + Time Picker */}
+                  <div className="flex flex-col gap-2">
+                    <input
+                      type="datetime-local"
+                      value={reminderDate}
+                      min={new Date().toISOString().slice(0, 16)}
+                      onChange={(e) => {
+                        setReminderDate(e.target.value);
+                        setReminderEnabled(true);
+                        setReminderError("");
+                      }}
+                      className="w-full rounded-lg border border-[#f0e8d8] bg-[#fffdf4] 
+                                 px-3 py-2 text-sm text-gray-800 placeholder-gray-400
+                                 focus:ring-2 focus:ring-[#d8b45c] outline-none transition-all
+                                 dark:bg-[#3a3a3a] dark:border-[#666] dark:text-gray-100
+                                 hover:shadow-[0_0_5px_rgba(216,180,92,0.3)]"
+                    />
+                  </div>
+
+                  {previewTime && (
+                    <p className="text-xs text-gray-600 dark:text-gray-400 italic mt-1">
+                      {previewTime}
+                    </p>
+                  )}
+
+                  {/* Email logic */}
+                  {user?.email ? (
+                    <p className="text-xs text-gray-600 dark:text-gray-400 italic mt-1">
+                      {t("reminderEmailDynamic", { email: user.email })}
+                    </p>
+                  ) : (
+                    <>
+                      <label className="text-xs text-gray-600 dark:text-gray-400 block mb-1 mt-2">
+                        {t("reminderEmail")}
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={reminderEmail}
+                        onChange={(e) => setReminderEmail(e.target.value)}
+                        className="w-full rounded-lg border border-[#f0e8d8] bg-[#fffdf4] px-3 py-2 text-sm
+                                   focus:ring-2 focus:ring-[#d8b45c] outline-none dark:bg-[#3a3a3a]
+                                   dark:border-[#666] dark:text-gray-100"
+                      />
+                      <p className="text-xs text-gray-600 dark:text-gray-400 italic mt-1">
+                        {t("reminderEmailProvided")}
+                      </p>
+                    </>
+                  )}
+
+                  {reminderError && (
+                    <p className="text-xs text-red-500 font-medium mt-1">
+                      {reminderError}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
 
           {/* Buttons */}
           <div className="flex justify-between mt-4 gap-3">

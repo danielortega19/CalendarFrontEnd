@@ -170,6 +170,7 @@ export default function Dashboard() {
             }}
             onSave={saveNote}
             onDelete={removeNote}
+            user={user}
           />
         )}
       </div>

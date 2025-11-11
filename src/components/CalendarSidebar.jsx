@@ -63,33 +63,55 @@ export default function CalendarSidebar({
           <li>🔵 {t("reminder")}: {rem}</li>
         </ul>
 
-        {/* Recent Notes */}
-        <div>
-          <h4 className="text-sm font-semibold mb-2">{t("recentNotes")}</h4>
-          {recent.length === 0 ? (
-            <p className="text-xs text-gray-500 italic">{t("noNotesThisMonth")}</p>
-          ) : (
-            <ul className="space-y-2">
-              {recent.map((n) => (
-                <li
-                  key={n.id}
-                  className={`text-xs py-2 px-2 rounded-md border-l-4 cursor-pointer
-                    ${n.priority === "important" ? "border-[#ea8b70]" : n.priority === "reminder" ? "border-[#9ab8dc]" : "border-[#d8b45c]"}`}
-                  onMouseEnter={(e) => showHover({ ...n, from: "sidebar" }, e.currentTarget)}
-                  onMouseLeave={requestHideHover}
-                >
-                  <div className="flex justify-between items-center">
-                    <p className="font-medium truncate">{n.title}</p>
-                    {n.pinned && <Pin size={12} className="text-[#d8b45c]" />}
-                  </div>
-                  <p className="text-[11px] text-gray-600">
-                    {format(new Date(n.date), "MMM d, yyyy", { locale })}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+     {/* Recent Notes */}
+<div>
+  <div className="flex items-center justify-between mb-2">
+    <h4 className="text-sm font-semibold flex items-center gap-2 text-[#333] dark:text-[#f5f5dc]">
+      🕓 {t("recentNotes")}
+    </h4>
+  </div>
+
+  {recent.length === 0 ? (
+    <p className="text-xs italic text-gray-600 dark:text-gray-400">
+      {t("noNotesThisMonth")}
+    </p>
+  ) : (
+    <ul className="space-y-2">
+      {recent.map((n) => (
+        <li
+          key={n.id}
+          className={`text-xs border-l-4 rounded-md p-2 cursor-pointer transition-all
+            ${
+              n.priority === "important"
+                ? "border-[#ea8b70]"
+                : n.priority === "reminder"
+                ? "border-[#9ab8dc]"
+                : "border-[#d8b45c]"
+            }
+            bg-[#f8f6ef] hover:bg-[#f7f3e8]
+            dark:bg-[#262626] dark:hover:bg-[#2e2e2e]
+            shadow-sm hover:shadow-md`}
+          onMouseEnter={(e) => showHover({ ...n, from: "sidebar" }, e.currentTarget)}
+          onMouseLeave={requestHideHover}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium truncate text-[#333] dark:text-[#f3f3f3]">
+                {n.title}
+              </p>
+              <p className="text-[11px] text-gray-600 dark:text-gray-400">
+                {format(new Date(n.date), "MMM d, yyyy", { locale })}
+              </p>
+            </div>
+            {n.pinned && <Pin size={14} className="text-[#d8b45c]" />}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
+
 
         {/* Filters */}
         <button

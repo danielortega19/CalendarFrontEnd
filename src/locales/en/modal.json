@@ -7,10 +7,19 @@
   "normal": "Normal 🟡",
   "important": "Important 🔴",
   "reminder": "Reminder 🔵",
-  "pinNote": "📌 Pin note",
+  "pinNote": "Pin note",
+  "setReminder": "Set Reminder",
+  "removeReminder": "Remove",
+  "reminderQuestion": "When would you like to be reminded?",
+  "reminderSetFor": "Reminder set for:",
+  "reminderInvalidFuture": "Reminder must be set for a future time.",
+  "reminderEmail": "Send reminder to (optional)",
+  "reminderEmailLoggedIn": "📧 An email reminder will be sent to your registered address.",
+  "reminderEmailProvided": "📧 An email reminder will be sent to the address you provide.",
+  "reminderEmailDynamic": "📧 An email reminder will be sent to {{email}}.",
   "update": "Update",
   "add": "Add",
   "cancel": "Cancel",
   "deleteNote": "Delete Note",
-  "titleRequired": "Title is Required"
+  "titleRequired": "Title is required"
 }

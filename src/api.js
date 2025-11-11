@@ -33,9 +33,9 @@ async function request(path, method = "GET", body = null, auth = false) {
 
 //
 // ==================== AUTH ====================
+// (unchanged)
 //
 
-// 🔐 Register new user
 export async function registerUser({ first, last, email }) {
   return await request("User/register", "POST", {
     name: { first, last },
@@ -43,12 +43,10 @@ export async function registerUser({ first, last, email }) {
   });
 }
 
-// 🔑 Login user
 export async function loginUser({ username, password }) {
   return await request("auth/login", "POST", { username, password });
 }
 
-// 🔁 Change password
 export async function changePassword({ email, newPassword }) {
   return await request(
     "User/change-password?isNewPassword=true",
@@ -58,7 +56,6 @@ export async function changePassword({ email, newPassword }) {
   );
 }
 
-// 📧 Reset password
 export async function resetPassword(email) {
   const headers = { "Content-Type": "application/json" };
   const res = await fetch(`${API_BASE}User/reset-password`, {
@@ -71,12 +68,10 @@ export async function resetPassword(email) {
   return res.json().catch(() => ({}));
 }
 
-// 🧩 Verify reset token
 export async function verifyResetToken({ email, token }) {
   return await request("User/verify-reset-token", "POST", { email, token });
 }
 
-// ✅ Complete password reset
 export async function completePasswordReset({ email, newPassword }) {
   return await request(
     "User/change-password?isNewPassword=true",
@@ -85,28 +80,26 @@ export async function completePasswordReset({ email, newPassword }) {
   );
 }
 
-// 👤 Get current logged-in user
 export async function getCurrentUser() {
   return await request("User/getLoggedInUser", "GET", null, true);
 }
 
 //
 // ==================== USERS ====================
+// (unchanged)
 //
 
-// 👥 Get all users
 export async function getAllUsers() {
   return await request("user/users", "GET", null, true);
 }
 
-// 🗑️ Delete user
 export async function deleteUser(id) {
   return await request(`user/${id}`, "DELETE", null, true);
 }
+
 export async function updateUser(data) {
   return await request("User/update", "PUT", data, true);
 }
-
 
 //
 // ==================== NOTES (Authenticated) ====================
@@ -130,10 +123,25 @@ export async function deleteNote(id) {
 }
 
 // ✏️ Update full note
+// ✅ UPDATED to include reminderDate and reminderEmail
 export async function updateNote(
   id,
-  { title, description, priority, reminder, pinned, date, imageBase64, imageType }
+  {
+    title,
+    description,
+    priority,
+    reminder,
+    pinned,
+    date,
+    imageBase64,
+    imageType,
+    reminderOffsetMinutes, // 🕒 minutes before (e.g. 30, 60, 1440)
+    reminderClock,         // 🕓 user-selected local time (e.g. "09:00")
+    reminderEmail,         // 📧 optional email
+  }
 ) {
+  const tzOffsetMinutes = new Date().getTimezoneOffset() * -1; // auto-detect timezone
+
   const body = {
     title,
     description,
@@ -143,7 +151,12 @@ export async function updateNote(
     date,
     imageBase64,
     imageType,
+    reminderOffsetMinutes,
+    reminderClock,
+    tzOffsetMinutes,
+    reminderEmail,
   };
+
   return await request(`Notes/${id}`, "PUT", body, true);
 }
 
@@ -162,7 +175,7 @@ export async function updateNotePriority(id, priority) {
   return await request(`Notes/${id}/priority`, "PUT", { priority }, true);
 }
 
-// 🔔 Update reminder
+// 🔔 Update reminder toggle (on/off)
 export async function updateNoteReminder(id, reminder) {
   return await request(`Notes/${id}/reminder`, "PUT", { reminder }, true);
 }
@@ -203,10 +216,25 @@ export async function deleteGuestNote(id) {
 }
 
 // ✏️ Update guest note
+// ✅ Updated to include reminderDate & reminderEmail too
 export async function updateGuestNote(
   id,
-  { title, description, priority, reminder, pinned, date, imageBase64, imageType }
+  {
+    title,
+    description,
+    priority,
+    reminder,
+    pinned,
+    date,
+    imageBase64,
+    imageType,
+    reminderOffsetMinutes,
+    reminderClock,
+    reminderEmail,
+  }
 ) {
+  const tzOffsetMinutes = new Date().getTimezoneOffset() * -1;
+
   const body = {
     title,
     description,
@@ -216,7 +244,12 @@ export async function updateGuestNote(
     date,
     imageBase64,
     imageType,
+    reminderOffsetMinutes,
+    reminderClock,
+    tzOffsetMinutes,
+    reminderEmail,
   };
+
   return await request(`Notes/${id}`, "PUT", body);
 }
 
@@ -224,7 +257,6 @@ export async function updateGuestNote(
 // ==================== NOTE MIGRATION ====================
 //
 
-// 🔄 Migrate guest notes to logged-in user
 export async function migrateGuestNotes(userId) {
   return await request(`Notes/migrate/${userId}`, "PUT");
 }
@@ -233,7 +265,6 @@ export async function migrateGuestNotes(userId) {
 // ==================== HELPERS ====================
 //
 
-// 👀 Check if user is authenticated
 export function isAuthenticated() {
   return !!localStorage.getItem("token");
 }
@@ -242,7 +273,6 @@ export function isAuthenticated() {
 // ==================== CONTACT ====================
 //
 
-// ✉️ Send contact form message
 export async function sendContactMessage({ name, email, subject, message }) {
   return await request("email/contact-email", "POST", { name, email, subject, message });
 }
