@@ -48,16 +48,16 @@ export default function NoteModal({
     return () => style.remove();
   }, []);
 
-  // 🕓 default reminder (note’s day at 9 AM)
+  // 🕓 Default reminder: only when user enables reminder and no time set yet
   useEffect(() => {
-    if (!note?.reminderDate && !isPastDate) {
-      const defaultDate = new Date(noteDate);
-      defaultDate.setHours(9, 0, 0, 0);
-      setReminderDate(defaultDate.toISOString().slice(0, 16));
+    if (reminderEnabled && !reminderDate && !isPastDate) {
+      const def = new Date();
+      def.setMinutes(def.getMinutes() + 15); // 15 minutes from now
+      setReminderDate(def.toISOString().slice(0, 16));
     }
-  }, [noteDate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [reminderEnabled, reminderDate, isPastDate]);
 
-  // 🗓️ Live preview of reminder
+  // 🗓️ Live preview
   useEffect(() => {
     if (reminderDate) {
       const formatted = format(new Date(reminderDate), "PPP, p");
@@ -208,9 +208,7 @@ export default function NoteModal({
             >
               <option value="normal">{t("normal")}</option>
               <option value="important">{t("important")}</option>
-              {!isPastDate && (
-                <option value="reminder">{t("reminder")}</option>
-              )}
+              {!isPastDate && <option value="reminder">{t("reminder")}</option>}
             </select>
           </div>
 
@@ -266,30 +264,43 @@ export default function NoteModal({
                     </button>
                   </div>
 
-                  {/* Date + Time Picker */}
-                  <div className="flex flex-col gap-2">
-                    <input
-                      type="datetime-local"
-                      value={reminderDate}
-                      min={new Date().toISOString().slice(0, 16)}
-                      onChange={(e) => {
-                        setReminderDate(e.target.value);
-                        setReminderEnabled(true);
-                        setReminderError("");
-                      }}
-                      className="w-full rounded-lg border border-[#f0e8d8] bg-[#fffdf4] 
-                                 px-3 py-2 text-sm text-gray-800 placeholder-gray-400
-                                 focus:ring-2 focus:ring-[#d8b45c] outline-none transition-all
-                                 dark:bg-[#3a3a3a] dark:border-[#666] dark:text-gray-100
-                                 hover:shadow-[0_0_5px_rgba(216,180,92,0.3)]"
-                    />
-                  </div>
+                  <input
+                    type="datetime-local"
+                    value={reminderDate ? reminderDate.slice(0, 16) : ""}
+                    min={!isPastDate ? new Date().toISOString().slice(0, 16) : undefined}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (newValue) {
+                        const selected = new Date(newValue);
+                        if (isTodayDate && selected < new Date()) {
+                          setReminderError(
+                            t("reminderInvalidFuture") || "Reminder must be set in the future."
+                          );
+                        } else {
+                          setReminderDate(newValue);
+                          setReminderError("");
+                          setReminderEnabled(true);
+                        }
+                      } else {
+                        setReminderDate("");
+                      }
+                    }}
+                    className="w-full rounded-lg border border-[#f0e8d8] bg-[#fffdf4] 
+                               px-3 py-2 text-sm text-gray-800 placeholder-gray-400
+                               focus:ring-2 focus:ring-[#d8b45c] outline-none transition-all
+                               dark:bg-[#3a3a3a] dark:border-[#666] dark:text-gray-100
+                               hover:shadow-[0_0_5px_rgba(216,180,92,0.3)]"
+                  />
 
                   {previewTime && (
                     <p className="text-xs text-gray-600 dark:text-gray-400 italic mt-1">
                       {previewTime}
                     </p>
                   )}
+
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                    {Intl.DateTimeFormat().resolvedOptions().timeZone}
+                  </p>
 
                   {/* Email logic */}
                   {user?.email ? (
