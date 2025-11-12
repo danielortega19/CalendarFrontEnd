@@ -1,11 +1,41 @@
 {
-  "CRITICAL_ERROR": "Error Crítico",
-  "DB_FAIL": "La conexión con la base de datos falló. Inténtalo de nuevo más tarde.",
-  "NETWORK_ERROR": "Problema de red — verifica tu conexión o VPN.",
-  "DUPLICATE_NOTE": "Nota duplicada detectada para este día.",
-  "UNAUTHORIZED": "Sesión expirada. Por favor inicia sesión de nuevo.",
-  "INVALID_ARGUMENT": "Entrada inválida o campos faltantes.",
-  "TIMEOUT": "La solicitud expiró. Inténtalo nuevamente.",
-  "UNKNOWN": "Ocurrió un error inesperado.",
-  "CLOSE": "Cerrar"
+  "CRITICAL_ERROR": "Error crítico del sistema",
+  "DB_FAIL": "Fallo en la conexión con la base de datos. Inténtalo de nuevo más tarde.",
+  "CLOSE": "Cerrar",
+
+  "UNAUTHORIZED": "No estás autorizado. Por favor, inicia sesión nuevamente.",
+  "INVALID_CREDENTIALS": "Usuario o contraseña inválidos.",
+  "PASSWORD_RESET_REQUIRED": "Debes restablecer tu contraseña antes de iniciar sesión.",
+  "TOKEN_EXPIRED": "Tu sesión ha expirado. Vuelve a iniciar sesión.",
+  "FORBIDDEN": "No tienes permiso para acceder a este recurso.",
+  "RATE_LIMITED": "Demasiadas solicitudes. Espera un momento e inténtalo otra vez.",
+
+  "NETWORK_ERROR": "Conexión de red perdida. Verifica tu conexión a internet.",
+
+  "INVALID_ARGUMENT": "Los datos proporcionados no son válidos. Revisa la información.",
+  "CONFLICT": "Se produjo un conflicto. Actualiza la página e inténtalo de nuevo.",
+  "TIMEOUT": "La solicitud excedió el tiempo de espera. Inténtalo nuevamente.",
+  "NOT_FOUND": "No se encontró el recurso solicitado.",
+  "SERVER_ERROR": "Se produjo un error inesperado en el servidor.",
+
+  "SMTP_CONFIG_MISSING": "Falta la configuración SMTP. No se pueden enviar correos electrónicos.",
+  "EMAIL_FORMAT_INVALID": "El formato del correo electrónico o del mensaje no es válido.",
+  "EMAIL_FAILED": "No se pudo enviar el correo. Inténtalo de nuevo más tarde.",
+
+  "DUPLICATE_NOTE": "Ya existe una nota con este título.",
+  "IMAGE_TOO_LARGE": "La imagen cargada supera el tamaño máximo permitido.",
+  "NOTE_NOT_FOUND": "No se encontró la nota.",
+  "NOTE_UPDATE_FAILED": "No se pudo actualizar la nota.",
+  "UPLOAD_NO_FILE": "No se cargó ningún archivo.",
+  "REMINDER_NOT_ENABLED": "Los recordatorios no están habilitados para esta nota.",
+
+  "USER_ALREADY_EXISTS": "Ya existe una cuenta con este correo electrónico.",
+  "USER_NOT_FOUND": "Usuario no encontrado.",
+  "USER_UPDATE_FAILED": "No se pudo actualizar la información del usuario.",
+  "USER_DELETION_FAILED": "No se pudo eliminar la cuenta del usuario.",
+
+  "TOKEN_ERROR": "Error al procesar el token de seguridad.",
+  "SUCCESS_OPERATION": "Acción completada con éxito.",
+
+  "UNKNOWN": "Ocurrió un error desconocido."
 }

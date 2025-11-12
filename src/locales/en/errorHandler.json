@@ -1,11 +1,41 @@
 {
-  "CRITICAL_ERROR": "Critical Error",
-  "DB_FAIL": "The database connection failed. Please try again later.",
-  "NETWORK_ERROR": "Network problem — check your Wi-Fi or VPN.",
-  "DUPLICATE_NOTE": "Duplicate note detected for this day.",
-  "UNAUTHORIZED": "Session expired. Please log in again.",
-  "INVALID_ARGUMENT": "Invalid input or missing fields.",
-  "TIMEOUT": "Request timed out. Please try again.",
-  "UNKNOWN": "An unexpected error occurred.",
-  "CLOSE": "Close"
+  "CRITICAL_ERROR": "Critical System Error",
+  "DB_FAIL": "Database connection failed. Please try again later.",
+  "CLOSE": "Close",
+
+  "UNAUTHORIZED": "You are not authorized. Please log in again.",
+  "INVALID_CREDENTIALS": "Invalid username or password.",
+  "PASSWORD_RESET_REQUIRED": "Please reset your password before logging in.",
+  "TOKEN_EXPIRED": "Your session has expired. Please log in again.",
+  "FORBIDDEN": "You do not have permission to access this resource.",
+  "RATE_LIMITED": "Too many requests. Please wait a moment.",
+
+  "NETWORK_ERROR": "Network connection lost. Please check your internet connection.",
+
+  "INVALID_ARGUMENT": "Invalid input provided. Please check your data.",
+  "CONFLICT": "A conflict occurred. Please refresh and try again.",
+  "TIMEOUT": "The request timed out. Please try again later.",
+  "NOT_FOUND": "The requested resource could not be found.",
+  "SERVER_ERROR": "An unexpected server error occurred.",
+
+  "SMTP_CONFIG_MISSING": "SMTP configuration missing. Unable to send emails.",
+  "EMAIL_FORMAT_INVALID": "Email address or message is invalid.",
+  "EMAIL_FAILED": "Failed to send email. Please try again later.",
+
+  "DUPLICATE_NOTE": "A note with this title already exists.",
+  "IMAGE_TOO_LARGE": "The uploaded image exceeds the maximum size.",
+  "NOTE_NOT_FOUND": "Note not found.",
+  "NOTE_UPDATE_FAILED": "Failed to update the note.",
+  "UPLOAD_NO_FILE": "No file was uploaded.",
+  "REMINDER_NOT_ENABLED": "Reminders are not enabled for this note.",
+
+  "USER_ALREADY_EXISTS": "An account with this email already exists.",
+  "USER_NOT_FOUND": "User not found.",
+  "USER_UPDATE_FAILED": "Unable to update user information.",
+  "USER_DELETION_FAILED": "Unable to delete user account.",
+
+  "TOKEN_ERROR": "Error processing security token.",
+  "SUCCESS_OPERATION": "Action completed successfully.",
+
+  "UNKNOWN": "An unknown error occurred."
 }

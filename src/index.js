@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import ThemeToggle from "./components/ThemeToggle";
+import { ToastProvider } from "./context/ToastContext";
 
 // ✅ Wrapper that can safely use hooks
 function AppWrapper() {
@@ -38,9 +38,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
+    <ToastProvider>
     <ErrorBoundary>
         <AppWrapper />
     </ErrorBoundary>
+    </ToastProvider>
   </React.StrictMode>
 );
 
